@@ -1,0 +1,11 @@
+{
+  "name": "daily-office",
+  "version": "1.0.0",
+  "description": "Daily Office liturgy application",
+  "scripts": {
+    "build": "node scripts/merge_script.js && node scripts/perform_merge.js && node -e \"const fs = require('fs'); fs.mkdirSync('website', { recursive: true }); fs.copyFileSync('build/Daily Office.html', 'website/index.html'); console.log('Copied output to website/index.html');\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
