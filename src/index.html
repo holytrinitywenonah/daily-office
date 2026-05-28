@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Office &amp; Podcast Reader - Episcopal BCP 1979</title>
+  <meta name="description" content="Read the BCP 1979 Daily Office and listen to Forward Movement morning and evening prayer podcasts with integrated NRSV daily office lectionary readings.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="theme-sepia season-ordinary fontsize-medium">
+
+  <!-- APP HEADER -->
+  <header class="app-header">
+    <div class="brand-section">
+      <h1 id="app-brand-title">Daily Office</h1>
+    </div>
+    
+    <div class="date-section">
+      <div class="date-nav-row">
+        <button class="btn-date-nav" id="btn-prev-day" title="Previous Day">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        
+        <button class="date-picker-wrapper" id="btn-open-calendar" title="Select Date" aria-label="Open Calendar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.4rem; opacity: 0.7;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="date-large" id="current-date-display"></span>
+        </button>
+        
+        <button class="btn-date-nav" id="btn-next-day" title="Next Day">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        
+        <button class="btn-date-nav" id="btn-today" title="Go to Today">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </button>
+      </div>
+      <span class="liturgical-season-tag" id="liturgical-season-display">Ordinary Time</span>
+    </div>
+    
+    <div class="header-controls">
+      <!-- Bible Lookup Trigger -->
+      <button class="btn-icon" id="trigger-bible-lookup" title="Search Scripture" aria-label="Search Scripture">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+      
+      <!-- Intercessory Prayer Trigger -->
+      <button class="btn-icon" id="trigger-prayer-list" title="Intercessory Prayers" aria-label="Intercessory Prayers">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+        </svg>
+      </button>
+      
+      <!-- Settings Trigger -->
+      <button class="btn-icon" id="trigger-settings" title="Settings" aria-label="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE NAVIGATION TABS (Visible only on mobile/tablet) -->
+  <nav class="mobile-nav-tabs" aria-label="Mobile View Selector">
+    <button class="mobile-nav-btn active" data-pane="liturgy">📖 Liturgy</button>
+    <button class="mobile-nav-btn" data-pane="podcast">🎙️ Podcasts</button>
+    <button class="mobile-nav-btn" id="mobile-nav-bio-btn" data-pane="saint" style="display: none;">✝ Bio</button>
+  </nav>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="app-container show-liturgy">
+    
+    <!-- LEFT COLUMN: LITURGY READER -->
+    <section class="liturgy-pane">
+      
+      <!-- Liturgy Tabs -->
+      <nav class="liturgy-tabs" id="liturgy-tabs" aria-label="Liturgy Offices Selector">
+        <button class="tab-btn active" data-office="morning">Morning<span class="desktop-only"> Prayer</span></button>
+        <button class="tab-btn" data-office="noonday">Noon<span class="desktop-only">day Prayer</span></button>
+        <button class="tab-btn" data-office="evening">Evening<span class="desktop-only"> Prayer</span></button>
+        <button class="tab-btn" data-office="compline">Compline</button>
+      </nav>
+      
+      <!-- Liturgy Controls Bar - Rite Selector + Override Toggles -->
+      <div class="liturgy-subbar">
+        <div class="subbar-left">
+          <div class="rite-selector" id="rite-selector-container">
+            <button class="rite-btn active" data-rite="rite2">Rite II</button>
+            <button class="rite-btn" data-rite="rite1">Rite I</button>
+          </div>
+          
+          <!-- Override Toggle Pills -->
+          <div class="override-toggles" id="override-toggles-container">
+            <button class="override-pill" id="override-feast" data-key="useFeast" title="Use BCP Major Feast readings &amp; collect when available">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Feast
+            </button>
+            <button class="override-pill" id="override-lff" data-key="useLff" title="Use LFF 2022 Lesser Feasts &amp; Fasts readings &amp; biography">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              LFF
+            </button>
+            <button class="override-pill override-pill-sunday" id="override-rcl" data-key="useRcl" title="Use Sunday RCL lectionary readings (Sundays only)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              RCL
+            </button>
+          </div>
+        </div>
+        
+        <span class="liturgy-date-label" id="liturgical-day-label">Wednesday in Easter Week</span>
+      </div>
+      
+      <!-- Scrollable Liturgy Area -->
+      <article class="liturgy-content" id="liturgy-content-area">
+        <div class="liturgy-body" id="liturgy-body-target">
+          <!-- LITURGY TEXT GENERATED DYNAMICALLY -->
+        </div>
+      </article>
+      
+    </section>
+    
+    <!-- RIGHT COLUMN: PODCAST HUB -->
+    <aside class="podcast-pane">
+      <div class="podcast-pane-header">
+        <h2>Daily Office & RCL Podcasts</h2>
+        
+        <!-- Show selector tabs -->
+        <div class="show-selector" id="show-selector-container">
+          <button class="show-btn active" data-show="morning">Morning<span class="desktop-only"> at the Office</span></button>
+          <button class="show-btn" data-show="evening"><span class="desktop-only">An </span>Evening<span class="desktop-only"> at Prayer</span></button>
+          <button class="show-btn" data-show="song">Same Old Song</button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="podcast-search-container">
+          <svg class="podcast-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="podcast-search-input" placeholder="Search episodes..." aria-label="Search podcast episodes">
+          <button id="podcast-search-clear-btn" title="Clear search" aria-label="Clear search">×</button>
+        </div>
+
+      </div>
+      
+      <!-- Episode Cards scrollbar -->
+      <div class="episode-list" id="episode-list-container">
+        <!-- EPISODES RENDERED DYNAMICALLY -->
+        <div class="scripture-loading">
+          <div class="spinner"></div>
+          <span>Loading episodes feed...</span>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- SAINT BIOGRAPHY PANEL -->
+    <aside class="saint-pane" id="saint-bio-pane" style="display: none;"></aside>
+    
+  </main>
+
+  <!-- BOTTOM PERSISTENT MEDIA PLAYER BAR -->
+  <footer class="bottom-player" id="bottom-player-bar">
+    <!-- Minimize Toggle Button -->
+    <button class="player-minimize-btn" id="player-minimize-btn" title="Minimize Player" aria-label="Minimize Player">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="player-main-row">
+      
+      <!-- Episode Info -->
+      <div class="player-info">
+        <img src="" alt="Podcast Logo" class="player-art" id="player-cover-art">
+        <div class="player-title-box">
+          <span class="player-ep-title" id="player-episode-title">Select an episode</span>
+          <span class="player-show-title" id="player-show-subtitle">Forward Movement</span>
+        </div>
+      </div>
+      
+      <!-- Media Controls -->
+      <div class="player-controls">
+        <!-- Skip Backward 15s -->
+        <button class="btn-player" id="player-skip-back" title="Rewind 15 seconds" aria-label="Rewind 15 seconds">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0-.57-8.38l5.67-5.67"></path>
+          </svg>
+        </button>
+        
+        <!-- Play / Pause -->
+        <button class="btn-player btn-play-pause" id="player-play-pause" title="Play" aria-label="Play/Pause">
+          <!-- Icon toggle handled dynamically -->
+        </button>
+        
+        <!-- Skip Forward 30s -->
+        <button class="btn-player" id="player-skip-forward" title="Fast forward 30 seconds" aria-label="Fast forward 30 seconds">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1 .57-8.38l-5.67-5.67"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Extra Controls (Speed) -->
+      <div class="player-extra-controls">
+        <label for="playback-speed-select" class="settings-label" style="margin-bottom:0; font-size:10px;">Speed:</label>
+        <select class="speed-select" id="playback-speed-select" aria-label="Playback Speed">
+          <option value="0.75">0.75x</option>
+          <option value="1.0" selected>1.0x</option>
+          <option value="1.25">1.25x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2.0">2.0x</option>
+        </select>
+      </div>
+      
+    </div>
+    
+    <!-- Timeline Progress Bar -->
+    <div class="player-timeline-box">
+      <span class="player-time" id="player-current-time">0:00</span>
+      <div class="slider-container" id="player-slider-track">
+        <div class="slider-progress" id="player-slider-progress"></div>
+        <div class="slider-thumb" id="player-slider-thumb"></div>
+      </div>
+      <span class="player-time" id="player-total-duration">0:00</span>
+    </div>
+  </footer>
+
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settings-modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Settings</h3>
+        <button class="btn-icon" id="close-settings" title="Close" aria-label="Close settings">✕</button>
+      </div>
+      
+      <!-- Theme Selection -->
+      <div class="settings-group">
+        <span class="settings-label">Reading Theme</span>
+        <div class="theme-button-grid">
+          <button class="theme-btn" data-theme="light">Light</button>
+          <button class="theme-btn active" data-theme="sepia">Parchment</button>
+          <button class="theme-btn" data-theme="dark">Dark Theme</button>
+        </div>
+      </div>
+      
+      <!-- Font Size Selection -->
+      <div class="settings-group">
+        <span class="settings-label">Font Size</span>
+        <div class="font-size-grid">
+          <button class="fontsize-btn" data-size="small">Small</button>
+          <button class="fontsize-btn active" data-size="medium">Medium</button>
+          <button class="fontsize-btn" data-size="large">Large</button>
+        </div>
+      </div>
+      
+      <!-- Typography Selection -->
+      <div class="settings-group">
+        <span class="settings-label">Typography Style</span>
+        <div class="font-size-grid" style="grid-template-columns: 1fr 1fr;">
+          <button class="typography-btn active" data-style="serif" style="font-family:'EB Garamond', serif; font-size:1.15em;">Serif (Liturgical)</button>
+          <button class="typography-btn" data-style="sans" style="font-family:sans-serif; font-size:0.85em;">Sans-Serif (Modern)</button>
+        </div>
+      </div>
+      
+      <!-- Bible Translation Preference -->
+      <div class="settings-group">
+        <span class="settings-label">Bible Translation</span>
+        <select class="select-setting" id="setting-bible-version">
+          <option value="NRSV" selected>NRSV (New Revised Standard Version)</option>
+          <option value="NRSVAE">NRSV Anglicized Edition</option>
+          <option value="ESV">English Standard Version (ESV)</option>
+          <option value="RSV">Revised Standard Version (RSV)</option>
+          <option value="NIV">New International Version (NIV)</option>
+          <option value="KJV">King James Version (KJV)</option>
+          <option value="WEB">World English Bible (WEB)</option>
+        </select>
+      </div>
+      
+      <!-- Choral Pitchpipe -->
+      <div class="settings-group" style="border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem;">
+        <span class="settings-label">Choral Pitchpipe (Tuning Tone)</span>
+        <div style="font-size: 0.8em; color: var(--text-color-muted, #777); margin-bottom: 0.5rem; line-height: 1.4;">
+          Traditional daily offices are often chanted recto tono (monotone) or to traditional plainchant tones. Use this pitchpipe to find a comfortable reciting pitch.
+        </div>
+        <div class="pitchpipe-controls" style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+          <button class="pitch-btn" data-freq="174.61" data-note="F3" style="flex: 1; min-width: 40px;">F</button>
+          <button class="pitch-btn" data-freq="196.00" data-note="G3" style="flex: 1; min-width: 40px;">G</button>
+          <button class="pitch-btn" data-freq="220.00" data-note="A3" style="flex: 1; min-width: 40px;">A</button>
+          <button class="pitch-btn" data-freq="233.08" data-note="Bb3" style="flex: 1; min-width: 40px;">B♭</button>
+          <button class="pitch-btn" data-freq="261.63" data-note="C4" style="flex: 1; min-width: 40px;">C</button>
+        </div>
+        
+        <!-- Gregorian Plainchant Stave -->
+        <div class="gregorian-stave-container" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); padding: 8px 16px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center;">
+          <svg viewBox="0 0 200 50" style="width: 100%; height: 60px; overflow: visible;">
+            <!-- Four Gregorian staff lines -->
+            <line x1="10" y1="10" x2="190" y2="10" stroke="#b08a43" stroke-width="1.2" />
+            <line x1="10" y1="20" x2="190" y2="20" stroke="#b08a43" stroke-width="1.2" />
+            <line x1="10" y1="30" x2="190" y2="30" stroke="#b08a43" stroke-width="1.2" />
+            <line x1="10" y1="40" x2="190" y2="40" stroke="#b08a43" stroke-width="1.2" />
+            
+            <!-- Traditional Gregorian C Clef on the top line (representing C) -->
+            <g transform="translate(18, 2)" fill="#b08a43">
+              <rect x="0" y="2" width="4" height="12" />
+              <rect x="3" y="2" width="3" height="3" />
+              <rect x="3" y="11" width="3" height="3" />
+            </g>
+            
+            <!-- Dynamic Note head (traditional square neume shape) -->
+            <rect id="pitchpipe-stave-note" x="85" y="21" width="10" height="8" fill="var(--color-season-accent, var(--accent-color))" rx="1" style="transition: y 0.25s cubic-bezier(0.4, 0, 0.2, 1);" />
+            <!-- Note labels inside SVG -->
+            <text x="175" y="44" font-family="'EB Garamond', serif" font-size="10px" fill="#b08a43" font-weight="bold">F3</text>
+            <text x="175" y="14" font-family="'EB Garamond', serif" font-size="10px" fill="#b08a43" font-weight="bold">C4</text>
+          </svg>
+        </div>
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; font-size: 0.85em;">
+          <span style="color: var(--text-color-muted, #777);">Selected: <strong id="pitchpipe-active-note" style="color: var(--color-season-accent, #c9a054);">G3 (196 Hz)</strong></span>
+          <button id="btn-pitchpipe-play" class="btn-primary" style="padding: 6px 12px; font-size: 0.85em; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer;">
+            <span id="pitchpipe-play-icon">▶</span> <span id="pitchpipe-play-text">Play Tone</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIBLE LOOKUP MODAL -->
+  <div class="modal-overlay" id="bible-modal-overlay">
+    <div class="modal-box" style="max-width: 640px;">
+      <div class="modal-header">
+        <h3>Scripture Lookup</h3>
+        <button class="btn-icon" id="close-bible" title="Close" aria-label="Close scripture lookup">✕</button>
+      </div>
+      
+      <!-- Scripture Search Box -->
+      <div class="settings-group">
+        <span class="settings-label">Enter Passage Reference</span>
+        <div class="search-input-box">
+          <input type="text" class="search-input" id="bible-search-input" placeholder="e.g. Psalm 23, John 3:16, Romans 8:31-39" aria-label="Scripture Passage">
+          <button class="btn-primary" id="btn-bible-search">Lookup</button>
+        </div>
+      </div>
+      
+      <!-- Scripture Text scrollable display -->
+      <div class="reading-content-box" style="max-height: 380px; overflow-y: auto;" id="bible-modal-result-box">
+        <div class="scripture-loading" id="bible-modal-loading-placeholder" style="display: none;">
+          <div class="spinner"></div>
+          <span>Fetching scripture...</span>
+        </div>
+        <div class="bible-search-welcome" id="bible-modal-welcome-text">
+          <p style="text-align: center; color: var(--text-secondary); font-family: var(--font-serif); font-size: 1.15rem; margin-top: 2rem;">
+            Enter a Scripture passage above to read in NRSV format.
+          </p>
+        </div>
+        <div id="bible-modal-result-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR MODAL -->
+  <div class="modal-overlay" id="calendar-modal-overlay">
+    <div class="modal-box calendar-modal-box">
+      <div class="modal-header">
+        <div style="display:flex; flex-direction:column; gap:0.15rem;">
+          <h3 style="margin:0;">Navigate to Date or Feast</h3>
+          <span id="calendar-streak-badge" class="calendar-streak-badge" style="font-size:0.75rem; color:#d4a359; font-weight:600; display:none;">🔥 0-Day Prayer Streak</span>
+        </div>
+        <button class="btn-icon" id="close-calendar" title="Close" aria-label="Close calendar">✕</button>
+      </div>
+
+      <!-- Feast / Date Search -->
+      <div class="settings-group" style="margin-bottom:0.5rem;">
+        <div class="search-input-box">
+          <input type="text" class="search-input" id="calendar-search-input" placeholder="Search by feast name or date (e.g. Francis, Dec 25, April 9)…" aria-label="Search feasts and dates">
+        </div>
+      </div>
+      
+      <!-- Feast Search Results -->
+      <div id="calendar-feast-results" class="calendar-feast-results" style="display:none;"></div>
+
+      <!-- Month / Year nav -->
+      <div class="calendar-month-nav">
+        <button class="btn-icon" id="cal-prev-month" aria-label="Previous month">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="calendar-month-label" id="cal-month-label"></span>
+        <button class="btn-icon" id="cal-next-month" aria-label="Next month">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="calendar-grid-wrap">
+        <div class="calendar-dow-header">
+          <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRAYER LIST MODAL -->
+  <div class="modal-overlay" id="prayer-modal-overlay">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3>Intercessory Prayer List</h3>
+        <button class="btn-icon" id="close-prayer" title="Close" aria-label="Close prayer list">✕</button>
+      </div>
+      
+
+      <!-- Add Prayer Form -->
+      <div class="settings-group">
+        <span class="settings-label">Add New Intention</span>
+        <div style="display: flex; gap: 0.5rem; flex-direction: column; margin-top: 0.5rem;">
+          <input type="text" class="search-input" id="prayer-name-input" placeholder="Name or concern (e.g. Jane Doe, The Parish, Safe travel)" aria-label="Name or concern">
+          <div style="display: flex; gap: 0.5rem;">
+            <select class="select-setting" id="prayer-category-select" style="flex: 1; margin-bottom: 0;">
+              <option value="sick">For the Sick / Suffering</option>
+              <option value="departed">For the Departed</option>
+              <option value="thanks">Thanksgivings</option>
+              <option value="general">General Intentions</option>
+            </select>
+            <button class="btn-primary" id="btn-add-prayer" style="padding: 0.5rem 1.25rem;">Add</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- List of active prayers -->
+      <div class="reading-content-box" style="max-height: 280px; overflow-y: auto;" id="prayer-list-box">
+        <!-- Prayers rendered dynamically -->
+      </div>
+      
+      <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 1rem; font-style: italic; line-height: 1.3;">
+        Your private intercessions are saved locally in this browser only. Active prayers are automatically embedded within daily office liturgies.
+      </p>
+      <div style="background-color: rgba(212, 163, 89, 0.08); border-left: 3px solid #d4a359; padding: 10px; border-radius: 4px; margin-top: 0.75rem; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.35;">
+        <strong>Privacy Notice:</strong> If this device or browser is shared, other users will be able to view these prayers. Please be mindful about oversharing or posting sensitive, personal, or identifiable public information.
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE SCRIPTS -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

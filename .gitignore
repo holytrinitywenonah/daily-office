@@ -1,0 +1,13 @@
+# Ignore build, logs, temp and system-specific files
+node_modules/
+.gemini/
+.system_generated/
+*.log
+scratch/
+bin/
+obj/
+.vs/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

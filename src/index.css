@@ -1,0 +1,2745 @@
+/* index.css - Design System and Theme Engine */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ==========================================================================
+   CSS VARIABLES & DESIGN TOKENS
+   ========================================================================== */
+:root {
+  /* Font Families */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', var(--font-sans);
+
+  /* Transition speeds */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* General Sizes & Layout */
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+  --border-radius-full: 9999px;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+  
+  /* Text Sizes (Fluid Typography via clamp) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+}
+
+/* ==========================================================================
+   THEME STYLES (Light, Sepia, Dark)
+   ========================================================================== */
+body.theme-light {
+  --bg-primary: hsl(40, 20%, 97%);
+  --bg-secondary: hsl(40, 15%, 93%);
+  --bg-card: hsl(0, 0%, 100%);
+  --bg-overlay: rgba(255, 255, 255, 0.8);
+  --border-color: hsl(40, 10%, 86%);
+  
+  --text-primary: hsl(210, 25%, 12%);
+  --text-secondary: hsl(210, 12%, 40%);
+  --text-muted: hsl(210, 10%, 55%);
+  --text-rubric: hsl(20, 70%, 40%); /* Liturgical red/rust rubrics */
+  
+  --player-bg: rgba(255, 255, 255, 0.85);
+  --player-shadow: 0 -10px 40px rgba(0, 0, 0, 0.06);
+}
+
+body.theme-sepia {
+  --bg-primary: hsl(36, 45%, 92%);
+  --bg-secondary: hsl(36, 35%, 86%);
+  --bg-card: hsl(38, 48%, 96%);
+  --bg-overlay: rgba(248, 243, 230, 0.8);
+  --border-color: hsl(36, 20%, 80%);
+  
+  --text-primary: hsl(30, 25%, 15%);
+  --text-secondary: hsl(30, 15%, 38%);
+  --text-muted: hsl(30, 10%, 52%);
+  --text-rubric: hsl(15, 65%, 35%);
+  
+  --player-bg: rgba(248, 243, 230, 0.9);
+  --player-shadow: 0 -10px 40px rgba(78, 62, 40, 0.1);
+}
+
+body.theme-dark {
+  --bg-primary: hsl(215, 28%, 9%);
+  --bg-secondary: hsl(215, 24%, 14%);
+  --bg-card: hsl(215, 22%, 16%);
+  --bg-overlay: rgba(14, 20, 31, 0.85);
+  --border-color: hsl(215, 15%, 22%);
+  
+  --text-primary: hsl(210, 20%, 90%);
+  --text-secondary: hsl(210, 12%, 70%);
+  --text-muted: hsl(210, 10%, 50%);
+  --text-rubric: hsl(5, 75%, 65%);
+  
+  --player-bg: rgba(20, 28, 44, 0.9);
+  --player-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   LITURGICAL SEASONS ACCENTS
+   ========================================================================== */
+body.season-easter, body.season-christmas {
+  --accent-color: hsl(43, 85%, 52%);
+  --accent-hover: hsl(43, 90%, 45%);
+  --accent-light: hsl(43, 85%, 92%);
+  --accent-gradient: linear-gradient(135deg, hsl(43, 85%, 52%), hsl(30, 85%, 50%));
+}
+body.theme-dark.season-easter, body.theme-dark.season-christmas {
+  --accent-light: hsl(43, 40%, 20%);
+}
+
+body.season-lent {
+  --accent-color: hsl(272, 60%, 54%);
+  --accent-hover: hsl(272, 70%, 44%);
+  --accent-light: hsl(272, 60%, 93%);
+  --accent-gradient: linear-gradient(135deg, hsl(272, 60%, 54%), hsl(290, 50%, 48%));
+}
+body.theme-dark.season-lent {
+  --accent-light: hsl(272, 35%, 18%);
+}
+
+body.season-advent {
+  --accent-color: hsl(220, 65%, 46%);
+  --accent-hover: hsl(220, 75%, 38%);
+  --accent-light: hsl(220, 65%, 92%);
+  --accent-gradient: linear-gradient(135deg, hsl(220, 65%, 46%), hsl(205, 70%, 44%));
+}
+body.theme-dark.season-advent {
+  --accent-light: hsl(220, 40%, 18%);
+}
+
+body.season-holy-week {
+  --accent-color: hsl(345, 75%, 26%);
+  --accent-hover: hsl(345, 80%, 20%);
+  --accent-light: hsl(345, 65%, 90%);
+  --accent-gradient: linear-gradient(135deg, hsl(345, 75%, 26%), hsl(330, 70%, 20%));
+}
+body.theme-dark.season-holy-week {
+  --accent-light: hsl(345, 40%, 15%);
+}
+
+body.season-martyr {
+  --accent-color: hsl(0, 75%, 45%);
+  --accent-hover: hsl(0, 80%, 38%);
+  --accent-light: hsl(0, 75%, 93%);
+  --accent-gradient: linear-gradient(135deg, hsl(0, 75%, 45%), hsl(15, 80%, 40%));
+}
+body.theme-dark.season-martyr {
+  --accent-light: hsl(0, 40%, 18%);
+}
+
+body.season-pentecost {
+  --accent-color: hsl(355, 68%, 50%);
+  --accent-hover: hsl(355, 75%, 42%);
+  --accent-light: hsl(355, 68%, 93%);
+  --accent-gradient: linear-gradient(135deg, hsl(355, 68%, 50%), hsl(15, 75%, 50%));
+}
+body.theme-dark.season-pentecost {
+  --accent-light: hsl(355, 40%, 18%);
+}
+
+body.season-ordinary {
+  --accent-color: hsl(148, 48%, 38%);
+  --accent-hover: hsl(148, 55%, 30%);
+  --accent-light: hsl(148, 48%, 92%);
+  --accent-gradient: linear-gradient(135deg, hsl(148, 48%, 38%), hsl(165, 50%, 35%));
+}
+body.theme-dark.season-ordinary {
+  --accent-light: hsl(148, 30%, 16%);
+}
+
+/* High contrast overrides for White seasons (Easter and Christmas) to make active states obvious */
+body.season-easter:not(.theme-dark) .tab-btn.active,
+body.season-christmas:not(.theme-dark) .tab-btn.active,
+body.season-easter:not(.theme-dark) .reading-tab-btn.active,
+body.season-christmas:not(.theme-dark) .reading-tab-btn.active {
+  color: hsl(35, 80%, 25%) !important;
+  border-color: hsl(43, 85%, 45%) !important;
+}
+
+body.season-easter .rite-btn.active,
+body.season-christmas .rite-btn.active,
+body.season-easter .override-pill.active,
+body.season-christmas .override-pill.active {
+  color: #111111 !important;
+  font-weight: 700 !important;
+}
+
+body.season-easter:not(.theme-dark) .mobile-nav-btn.active,
+body.season-christmas:not(.theme-dark) .mobile-nav-btn.active {
+  color: hsl(35, 80%, 25%) !important;
+  background-color: hsl(43, 85%, 88%) !important;
+  border-bottom-color: hsl(43, 85%, 45%) !important;
+}
+
+/* Font Size Settings Override classes */
+.fontsize-small { --prayer-text-size: 1.05rem; }
+.fontsize-medium { --prayer-text-size: 1.25rem; }
+.fontsize-large { --prayer-text-size: 1.45rem; }
+
+/* ==========================================================================
+   RESET & LAYOUT BASE
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--border-radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  outline: none;
+}
+
+/* ==========================================================================
+   APP HEADER
+   ========================================================================== */
+header.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.brand-section h1 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-xl);
+  letter-spacing: -0.02em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-section h1::before {
+  content: "☩";
+  font-family: var(--font-serif);
+  font-weight: normal;
+  -webkit-text-fill-color: var(--accent-color);
+  margin-right: 0.2rem;
+  animation: pulse-gold 3s infinite ease-in-out;
+}
+
+.date-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.date-large {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.liturgical-season-tag {
+  font-family: var(--font-serif);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-top: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.liturgical-season-tag::before {
+  content: "•";
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background-color: var(--bg-secondary);
+  color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   APP MAIN GRID LAYOUT
+   ========================================================================== */
+main.app-container {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  gap: 1.5rem;
+  /* Add padding bottom to make sure the persistent player doesn't hide text */
+  padding-bottom: 1.5rem;
+  transition: padding-bottom var(--transition-normal);
+}
+
+body.player-active main.app-container {
+  padding-bottom: 120px;
+}
+
+body.player-active.player-minimized main.app-container {
+  padding-bottom: 65px;
+}
+
+/* Left Pane: Liturgy Reader */
+.liturgy-pane {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* Tab Navigation inside Liturgy Pane */
+.liturgy-tabs {
+  display: flex;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.liturgy-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+.tab-btn.active {
+  background-color: var(--bg-card);
+  color: var(--accent-color);
+  border-bottom: 2px solid var(--accent-color);
+  font-weight: 600;
+}
+
+/* Rite Selector Bar */
+.liturgy-subbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1.25rem;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.subbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.rite-selector {
+  display: inline-flex;
+  background-color: var(--bg-primary);
+  padding: 0.2rem;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--border-color);
+}
+
+.rite-btn {
+  padding: 0.3rem 0.85rem;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: var(--text-xs);
+  border-radius: var(--border-radius-full);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.rite-btn.active {
+  background-color: var(--accent-color);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Override Toggle Pills (Feast / LFF / RCL) */
+.override-toggles {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.override-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.65rem;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-full);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-muted);
+  background-color: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.override-pill:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background-color: var(--accent-light);
+}
+
+.override-pill.active {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.override-pill svg {
+  flex-shrink: 0;
+}
+
+/* Sunday-only pill dims when not Sunday */
+.override-pill-sunday:not(.active) {
+  opacity: 0.6;
+}
+
+.liturgy-date-label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: right;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =============================================
+   CALENDAR MODAL
+   ============================================= */
+.calendar-modal-box {
+  max-width: 480px;
+  width: 100%;
+}
+
+.calendar-month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0 0.75rem;
+  gap: 0.5rem;
+}
+
+.calendar-month-label {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  flex: 1;
+  text-align: center;
+}
+
+.calendar-grid-wrap {
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.calendar-dow-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.calendar-dow-header span {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 0.5rem 0.25rem;
+  color: var(--text-muted);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background-color: var(--border-color);
+}
+
+.cal-day {
+  background-color: var(--bg-card);
+  padding: 0.4rem 0.3rem;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  position: relative;
+}
+
+.cal-day:hover {
+  background-color: var(--accent-light);
+}
+
+.cal-day.empty {
+  background-color: var(--bg-secondary);
+  cursor: default;
+}
+
+.cal-day.today .cal-day-num {
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cal-day.selected {
+  background-color: var(--accent-light);
+}
+
+.cal-day.selected .cal-day-num {
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+.cal-day-num {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cal-day.other-month .cal-day-num {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.cal-day-feast {
+  font-size: 0.55rem;
+  font-family: var(--font-heading);
+  color: var(--accent-color);
+  text-align: center;
+  line-height: 1.2;
+  margin-top: 1px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.cal-day.has-major-feast .cal-day-num {
+  color: var(--accent-color);
+}
+
+.cal-day.has-major-feast::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 4px;
+}
+
+.calendar-feast-results {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  overflow-y: auto;
+  max-height: 180px;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-feast-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  gap: 0.75rem;
+}
+
+.calendar-feast-result-item:last-child {
+  border-bottom: none;
+}
+
+.calendar-feast-result-item:hover {
+  background-color: var(--accent-light);
+}
+
+.feast-result-name {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.feast-result-date {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--accent-color);
+  white-space: nowrap;
+  background-color: var(--accent-light);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--border-radius-full);
+}
+
+.feast-result-type {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* Liturgical Colors CSS Variables for Calendar Modal */
+.season-lent {
+  --cal-accent: hsl(272, 60%, 54%);
+  --cal-bg: hsl(272, 60%, 95%);
+}
+.theme-dark .season-lent {
+  --cal-bg: hsl(272, 35%, 16%);
+}
+
+.season-advent {
+  --cal-accent: hsl(220, 65%, 46%);
+  --cal-bg: hsl(220, 65%, 94%);
+}
+.theme-dark .season-advent {
+  --cal-bg: hsl(220, 40%, 15%);
+}
+
+.season-holy-week {
+  --cal-accent: hsl(345, 75%, 26%);
+  --cal-bg: hsl(345, 65%, 92%);
+}
+.theme-dark .season-holy-week {
+  --cal-bg: hsl(345, 40%, 12%);
+}
+
+.season-martyr {
+  --cal-accent: hsl(0, 75%, 45%);
+  --cal-bg: hsl(0, 75%, 95%);
+}
+.theme-dark .season-martyr {
+  --cal-bg: hsl(0, 40%, 15%);
+}
+
+.season-pentecost {
+  --cal-accent: hsl(355, 68%, 50%);
+  --cal-bg: hsl(355, 68%, 95%);
+}
+.theme-dark .season-pentecost {
+  --cal-bg: hsl(355, 40%, 15%);
+}
+
+.season-ordinary {
+  --cal-accent: hsl(148, 48%, 38%);
+  --cal-bg: hsl(148, 48%, 94%);
+}
+.theme-dark .season-ordinary {
+  --cal-bg: hsl(148, 30%, 13%);
+}
+
+.season-easter, .season-christmas {
+  --cal-accent: hsl(43, 85%, 48%);
+  --cal-bg: hsl(43, 85%, 94%);
+}
+.theme-dark .season-easter, .theme-dark .season-christmas {
+  --cal-bg: hsl(43, 40%, 15%);
+}
+
+/* Liturgical coloring on calendar grid cells */
+.cal-day.season-lent,
+.cal-day.season-advent,
+.cal-day.season-holy-week,
+.cal-day.season-martyr,
+.cal-day.season-pentecost,
+.cal-day.season-ordinary,
+.cal-day.season-easter,
+.cal-day.season-christmas {
+  border-left: 3px solid var(--cal-accent);
+}
+
+.cal-day.season-lent:hover,
+.cal-day.season-advent:hover,
+.cal-day.season-holy-week:hover,
+.cal-day.season-martyr:hover,
+.cal-day.season-pentecost:hover,
+.cal-day.season-ordinary:hover,
+.cal-day.season-easter:hover,
+.cal-day.season-christmas:hover {
+  background-color: var(--cal-bg) !important;
+}
+
+.cal-day.season-lent .cal-day-feast,
+.cal-day.season-advent .cal-day-feast,
+.cal-day.season-holy-week .cal-day-feast,
+.cal-day.season-martyr .cal-day-feast,
+.cal-day.season-pentecost .cal-day-feast,
+.cal-day.season-ordinary .cal-day-feast,
+.cal-day.season-easter .cal-day-feast,
+.cal-day.season-christmas .cal-day-feast {
+  color: var(--cal-accent);
+}
+
+.cal-day.season-lent.has-major-feast::after,
+.cal-day.season-advent.has-major-feast::after,
+.cal-day.season-holy-week.has-major-feast::after,
+.cal-day.season-martyr.has-major-feast::after,
+.cal-day.season-pentecost.has-major-feast::after,
+.cal-day.season-ordinary.has-major-feast::after,
+.cal-day.season-easter.has-major-feast::after,
+.cal-day.season-christmas.has-major-feast::after {
+  background-color: var(--cal-accent) !important;
+}
+
+/* Liturgical coloring on search result items */
+.calendar-feast-result-item.season-lent,
+.calendar-feast-result-item.season-advent,
+.calendar-feast-result-item.season-holy-week,
+.calendar-feast-result-item.season-martyr,
+.calendar-feast-result-item.season-pentecost,
+.calendar-feast-result-item.season-ordinary,
+.calendar-feast-result-item.season-easter,
+.calendar-feast-result-item.season-christmas {
+  border-left: 4px solid var(--cal-accent);
+}
+
+.calendar-feast-result-item.season-lent:hover,
+.calendar-feast-result-item.season-advent:hover,
+.calendar-feast-result-item.season-holy-week:hover,
+.calendar-feast-result-item.season-martyr:hover,
+.calendar-feast-result-item.season-pentecost:hover,
+.calendar-feast-result-item.season-ordinary:hover,
+.calendar-feast-result-item.season-easter:hover,
+.calendar-feast-result-item.season-christmas:hover {
+  background-color: var(--cal-bg) !important;
+}
+
+.calendar-feast-result-item.season-lent .feast-result-date,
+.calendar-feast-result-item.season-advent .feast-result-date,
+.calendar-feast-result-item.season-holy-week .feast-result-date,
+.calendar-feast-result-item.season-martyr .feast-result-date,
+.calendar-feast-result-item.season-pentecost .feast-result-date,
+.calendar-feast-result-item.season-ordinary .feast-result-date,
+.calendar-feast-result-item.season-easter .feast-result-date,
+.calendar-feast-result-item.season-christmas .feast-result-date {
+  color: var(--cal-accent) !important;
+  background-color: var(--cal-bg) !important;
+}
+
+/* Liturgy Scrolling Content Area */
+.liturgy-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem;
+  scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   LITURGY TYPOGRAPHY & TEXT STYLING
+   ========================================================================== */
+.liturgy-body {
+  font-family: var(--font-serif);
+  font-size: var(--prayer-text-size, var(--text-base));
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.liturgy-section-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  border-bottom: 2px double var(--border-color);
+  padding-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.liturgy-section-title:first-child {
+  margin-top: 0;
+}
+
+.rubric {
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+  font-style: italic;
+  color: var(--text-rubric);
+  margin: 1.25rem 0 0.75rem 0;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+.prayer-block {
+  margin-bottom: 1.5rem;
+}
+
+.prayer-block p {
+  margin-bottom: 0.75rem;
+  text-indent: 0;
+  white-space: pre-line;
+}
+
+.prayer-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+/* Versicle and Response Formatting */
+.versicle-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  margin-bottom: 0.5rem;
+  gap: 0.25rem;
+}
+
+.v-indicator, .r-indicator {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* Creed and Lord's Prayer special indentations */
+.indented-text {
+  padding-left: 1.5rem;
+  white-space: pre-line;
+  margin-bottom: 1rem;
+}
+
+.doxology-block {
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+/* Dynamic Scripture Section inside Liturgy Flow */
+.appointed-readings-section {
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  margin: 2rem 0;
+  padding: 1.5rem;
+}
+
+.readings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.readings-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.readings-nav-tabs {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.reading-tab-btn {
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.reading-tab-btn:hover {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.reading-tab-btn.active {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.reading-content-box {
+  background-color: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  min-height: 200px;
+}
+
+/* Oremus / Scripture parsing classes */
+.passageref {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--accent-color);
+}
+
+.bibletext p, .bible-api-text p {
+  margin-bottom: 0.85rem;
+  line-height: 1.6;
+}
+
+.vnumVis {
+  font-size: 0.75em;
+  vertical-align: super;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+}
+
+.bibletext .sc, .bibletext span.sc {
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+}
+
+.scripture-source-credit {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.5rem;
+}
+
+/* Loading/Error States */
+.scripture-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  gap: 0.75rem;
+  height: 200px;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-color);
+  border-radius: var(--border-radius-full);
+  animation: spin 1s infinite linear;
+}
+
+.scripture-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-rubric);
+  text-align: center;
+  padding: 2rem;
+  height: 200px;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   RIGHT PANE: PODCAST HUB
+   ========================================================================== */
+.podcast-pane {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  height: max-content;
+}
+
+.podcast-pane-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.podcast-pane-header h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Podcast Show Selector Tabs */
+.show-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  background-color: var(--bg-primary);
+  padding: 0.25rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+}
+
+/* Podcast Search Bar */
+.podcast-search-container {
+  position: relative;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.podcast-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+#podcast-search-input {
+  width: 100%;
+  padding: 0.6rem 2.2rem 0.6rem 2.2rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#podcast-search-input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+/* Clear search button inside the input */
+#podcast-search-clear-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+#podcast-search-clear-btn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+
+.show-btn {
+  padding: 0.65rem;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.show-btn:hover {
+  color: var(--text-primary);
+}
+
+.show-btn.active {
+  background-color: var(--bg-card);
+  color: var(--accent-color);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+/* Episode List View */
+.episode-list {
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Episode Item Card */
+.episode-card {
+  padding: 1rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.episode-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.episode-card.playing {
+  border-color: var(--accent-color);
+  background-color: var(--accent-light);
+}
+
+.episode-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.episode-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.episode-date {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.episode-description {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.episode-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.episode-duration {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.episode-play-btn {
+  background-color: var(--accent-color);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xs);
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.episode-play-btn:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.1);
+}
+
+.episode-play-btn::before {
+  content: "▶";
+  margin-left: 2px;
+}
+
+.episode-card.playing .episode-play-btn::before {
+  content: "⏸";
+  margin-left: 0;
+}
+/* Liturgical Podcasts Section & Cards */
+.liturgical-podcasts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0.5rem 0 1.25rem 0;
+  padding: 0 0.5rem;
+}
+
+.liturgical-podcast-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  transition: all var(--transition-fast) ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.liturgical-podcast-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--accent-color);
+  transition: all var(--transition-fast) ease-in-out;
+}
+
+.liturgical-podcast-card.song::before {
+  background-color: #6366f1; /* Cool Indigo for Same Old Song */
+}
+
+.liturgical-podcast-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.liturgical-podcast-card.song:hover {
+  border-color: #6366f1;
+}
+
+.liturgical-podcast-card.active {
+  border-color: var(--accent-color);
+  background-color: var(--accent-light);
+}
+
+.liturgical-podcast-card.song.active {
+  border-color: #6366f1;
+  background-color: rgba(99, 102, 241, 0.08);
+}
+
+.podcast-card-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.podcast-card-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius-sm);
+  background: var(--bg-secondary);
+  color: var(--accent-color);
+}
+
+.liturgical-podcast-card.song .podcast-card-icon-container {
+  color: #6366f1;
+}
+
+.podcast-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.podcast-card-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-color);
+  text-transform: uppercase;
+}
+
+.podcast-card-badge.song {
+  color: #6366f1;
+}
+
+.podcast-card-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.podcast-card-duration {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.podcast-card-play-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  background-color: var(--accent-color);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast) ease-in-out;
+  box-shadow: var(--shadow-sm);
+}
+
+.liturgical-podcast-card.song .podcast-card-play-btn {
+  background-color: #6366f1;
+}
+
+.podcast-card-play-btn:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+.podcast-card-play-btn svg {
+  flex-shrink: 0;
+}
+
+/* Selected Podcast Highlight inside Podcasts tab */
+.episode-card.selected-date-match {
+  border-color: var(--accent-color);
+  background: var(--accent-light);
+  box-shadow: 0 0 0 2px var(--accent-color);
+  position: relative;
+}
+
+.episode-card.selected-date-match::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--accent-color);
+}
+
+/* Same Old Song highlights can be styled uniquely */
+.episode-card.selected-date-match:has(.liturgical-match-badge.song) {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.04);
+  box-shadow: 0 0 0 2px #6366f1;
+}
+
+.episode-card.selected-date-match:has(.liturgical-match-badge.song)::before {
+  background-color: #6366f1;
+}
+
+/* Liturgical Match Badges */
+.liturgical-match-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+  background-color: var(--accent-light);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.liturgical-match-badge.song {
+  color: #6366f1;
+  background-color: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+body.theme-dark .liturgical-match-badge.song {
+  background-color: rgba(99, 102, 241, 0.2);
+}
+
+/* ==========================================================================
+   SAINT BIOGRAPHY PANEL & GRID LAYOUT
+   ========================================================================== */
+.saint-pane {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  height: max-content;
+  transition: all var(--transition-normal);
+}
+
+.saint-pane-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.saint-pane-header h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.saint-type-tag {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.saint-pane-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.saint-collect-box {
+  background-color: var(--bg-secondary);
+  padding: 1.25rem;
+  border-radius: var(--border-radius-md);
+  border-left: 4px solid var(--accent-color);
+}
+
+.saint-collect-box h3, .saint-bio-content h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.saint-collect-box p {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+.saint-bio-content p {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+@media (min-width: 1025px) {
+  main.app-container.has-saint-sidebar {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 0.8fr);
+    max-width: 1800px;
+  }
+}
+
+/* ==========================================================================
+   PERSISTENT BOTTOM PLAYER BAR (Glassmorphism)
+   ========================================================================== */
+.bottom-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--player-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+  z-index: 100;
+  box-shadow: var(--player-shadow);
+  transform: translateY(100%);
+  transition: transform var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bottom-player.active {
+  transform: translateY(0);
+}
+
+/* Minimize Toggle Button */
+.player-minimize-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+}
+
+.player-minimize-btn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.player-minimize-btn svg {
+  transition: transform var(--transition-normal);
+}
+
+/* Minimized Player State */
+.bottom-player.minimized {
+  padding: 0.5rem 3.5rem 0.5rem 1rem !important; /* Extra padding on the right for the absolute button */
+  gap: 0;
+}
+
+.bottom-player.minimized .player-minimize-btn {
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  position: absolute;
+}
+
+.bottom-player.minimized .player-minimize-btn svg {
+  transform: rotate(180deg);
+}
+
+.bottom-player.minimized .player-timeline-box,
+.bottom-player.minimized .player-extra-controls,
+.bottom-player.minimized #player-skip-back,
+.bottom-player.minimized #player-skip-forward,
+.bottom-player.minimized .player-show-title,
+.bottom-player.minimized #player-show-subtitle {
+  display: none !important;
+}
+
+.bottom-player.minimized .player-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+  flex-wrap: nowrap !important;
+}
+
+.bottom-player.minimized .player-info {
+  width: auto;
+  min-width: 0;
+  flex: 1;
+  gap: 0.5rem;
+}
+
+.bottom-player.minimized .player-art {
+  width: 32px;
+  height: 32px;
+}
+
+.bottom-player.minimized .player-title-box {
+  min-width: 0;
+}
+
+.bottom-player.minimized .player-ep-title {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.bottom-player.minimized .player-controls {
+  width: auto;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  order: 2 !important;
+}
+
+/* Responsive adjustment for minimize button when player is NOT minimized */
+@media (max-width: 768px) {
+  .player-minimize-btn {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.3rem;
+  }
+}
+
+.player-main-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 25%;
+  min-width: 200px;
+}
+
+.player-art {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  object-fit: cover;
+}
+
+.player-title-box {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.player-ep-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-show-title {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* Media Controls */
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  width: 40%;
+}
+
+.btn-player {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.btn-player:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+.btn-player.btn-play-pause {
+  background-color: var(--accent-color);
+  color: white;
+  width: 48px;
+  height: 48px;
+  font-size: var(--text-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-player.btn-play-pause:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+/* Timeline & Slider */
+.player-timeline-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.player-time {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  width: 40px;
+  font-variant-numeric: tabular-nums;
+}
+
+.slider-container {
+  flex: 1;
+  position: relative;
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: var(--border-radius-full);
+  cursor: pointer;
+}
+
+.slider-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: var(--border-radius-full);
+  width: 0%;
+}
+
+.slider-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: var(--border-radius-full);
+  background-color: white;
+  border: 2px solid var(--accent-color);
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.slider-container:hover .slider-thumb {
+  opacity: 1;
+}
+
+/* Extra Player Controls (Speed/Volume) */
+.player-extra-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
+  width: 25%;
+}
+
+.speed-select {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--bg-card);
+  outline: none;
+}
+
+.speed-select:hover {
+  border-color: var(--accent-color);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   MODAL DIALOG (Settings / Custom Scripture Lookup)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 480px;
+  padding: 2rem;
+  transform: scale(0.9);
+  transition: transform var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modal-overlay.active .modal-box {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.modal-header h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+/* Settings Form Control Groups */
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-label {
+  font-family: var(--font-heading);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.theme-button-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.theme-btn {
+  padding: 0.75rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.theme-btn.active {
+  border-color: var(--accent-color);
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.font-size-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.fontsize-btn {
+  padding: 0.5rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: var(--text-xs);
+  transition: all var(--transition-fast);
+}
+
+.fontsize-btn.active {
+  border-color: var(--accent-color);
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.select-setting {
+  width: 100%;
+  padding: 0.65rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+}
+
+.select-setting:focus {
+  border-color: var(--accent-color);
+}
+
+.search-input-box {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  font-family: inherit;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--accent-color);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: white;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Responsive Breakpoints */
+.mobile-nav-tabs {
+  display: none;
+}
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: inline !important;
+  }
+
+  .readings-header {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 0.75rem;
+  }
+
+  .readings-title {
+    text-align: center;
+    font-size: var(--text-sm) !important;
+  }
+
+  .readings-nav-tabs {
+    justify-content: stretch !important;
+    width: 100%;
+  }
+
+  .reading-tab-btn {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 0.5rem 0.25rem !important;
+  }
+
+  .liturgy-tabs {
+    justify-content: stretch !important;
+  }
+
+  .tab-btn {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 0.75rem 0.25rem !important;
+  }
+
+  header.app-header {
+    position: relative !important;
+    top: auto !important;
+    box-shadow: none !important;
+  }
+  
+  .mobile-nav-tabs {
+    display: flex;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+  }
+  
+  .mobile-nav-btn {
+    flex: 1;
+    padding: 0.85rem 0.5rem;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    border-bottom: 3px solid transparent;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  
+  .mobile-nav-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+  }
+  
+  .mobile-nav-btn.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+    background-color: var(--accent-light);
+    font-weight: 600;
+  }
+  
+  main.app-container {
+    display: block;
+    padding: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  body.player-active main.app-container {
+    padding-bottom: 160px;
+  }
+  
+  body.player-active.player-minimized main.app-container {
+    padding-bottom: 75px;
+  }
+  
+  .liturgy-pane, .podcast-pane, .saint-pane {
+    display: none !important;
+    height: auto !important;
+  }
+  
+  .app-container.show-liturgy .liturgy-pane {
+    display: flex !important;
+  }
+  
+  .app-container.show-podcast .podcast-pane {
+    display: flex !important;
+  }
+  
+  .app-container.show-saint .saint-pane {
+    display: flex !important;
+  }
+  
+  /* Increase tap targets on mobile/tablet */
+  .btn-date-nav {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .date-picker-wrapper {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .override-pill {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  header.app-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .header-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .liturgy-content {
+    padding: 1.5rem;
+  }
+  
+  .player-main-row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .player-info {
+    width: 100%;
+  }
+  
+  .player-controls {
+    width: 70%;
+    order: 3;
+  }
+  
+  .player-extra-controls {
+    width: 25%;
+    order: 4;
+  }
+
+  .liturgy-subbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .subbar-left {
+    flex-wrap: nowrap !important;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.35rem !important;
+  }
+
+  .override-toggles {
+    gap: 0.25rem !important;
+  }
+
+  .override-pill {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  .liturgy-date-label {
+    text-align: center !important;
+    max-width: none !important;
+    margin-top: 0.25rem;
+  }
+
+  /* Calendar Modal Optimization on Mobile */
+  .modal-box.calendar-modal-box {
+    padding: 1rem !important;
+    gap: 0.75rem !important;
+    width: 95%;
+  }
+
+  .calendar-month-nav {
+    margin: 0.5rem 0 0.25rem !important;
+  }
+
+  .cal-day {
+    min-height: 40px !important;
+    justify-content: center !important;
+  }
+
+  .cal-day-feast {
+    display: none !important;
+  }
+}
+
+/* Date Navigation Controls */
+.date-nav-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-date-nav {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+.btn-date-nav:hover {
+  background-color: var(--bg-secondary);
+  color: var(--accent-color);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.date-picker-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-sm);
+  padding: 0.25rem 0.6rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+.date-picker-wrapper:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
+}
+.date-picker-wrapper input[type="date"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* BibleGateway Passage Styling */
+.passage-text p {
+  margin-bottom: .85rem;
+  line-height: 1.65;
+}
+.passage-text h3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.passage-text .versenum {
+  font-size: 0.75em;
+  vertical-align: super;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+}
+.passage-text .chapternum {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-right: 0.3rem;
+}
+
+/* ==========================================================================
+   NEW ENHANCEMENTS: LITURGICAL ACCENTS & DEVOTIONS
+   ========================================================================== */
+
+/* Calendar cell relative adjustment for dots */
+.cal-day {
+  position: relative;
+  padding-bottom: 12px !important;
+}
+
+/* Personal Intercessions Card */
+.personal-intercessions-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-color);
+  border-radius: var(--border-radius-sm);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-sans);
+}
+.personal-intercessions-card h4 {
+  font-family: var(--font-heading);
+  color: var(--accent-color);
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.personal-intercessions-card ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.personal-intercessions-card li {
+  margin-bottom: 0.4rem;
+}
+.personal-intercessions-card li:last-child {
+  margin-bottom: 0;
+}
+
+/* Habit Completion Card inside Liturgies */
+.habit-completion-card {
+  background: var(--accent-gradient);
+  color: #fff;
+  border-radius: var(--border-radius-md);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: transform var(--transition-fast);
+}
+.habit-completion-card:hover {
+  transform: translateY(-2px);
+}
+.habit-completion-card h4 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 600;
+}
+.habit-completion-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+.btn-habit-complete {
+  background-color: #fff;
+  color: var(--accent-color);
+  border: none;
+  border-radius: var(--border-radius-full);
+  padding: 0.6rem 1.5rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.btn-habit-complete:hover {
+  background-color: var(--bg-primary);
+  transform: scale(1.03);
+}
+.btn-habit-complete.completed {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Calendar Modal Streak Badge */
+.calendar-streak-badge {
+  font-family: var(--font-heading);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  background-color: var(--accent-light);
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--accent-color);
+}
+
+/* Calendar Grid Dot Indicators */
+.cal-day-dots-container {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin-top: 2px;
+  height: 4px;
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+}
+.cal-day-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.cal-day-dot.morning { background-color: #d4a359; }
+.cal-day-dot.noonday { background-color: #3b82f6; }
+.cal-day-dot.evening { background-color: #ef4444; }
+.cal-day-dot.compline { background-color: #8b5cf6; }
+
+/* Intercessory Prayer Modal and List */
+.prayer-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.prayer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 0.75rem 1rem;
+  transition: background-color var(--transition-fast);
+}
+.prayer-item:hover {
+  background-color: var(--bg-primary);
+}
+.prayer-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.prayer-item-name {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+.prayer-item-category {
+  font-size: 0.75rem;
+  color: var(--accent-color);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.btn-delete-prayer {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.25rem;
+  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-delete-prayer:hover {
+  color: #ef4444;
+}
+.prayer-empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-secondary);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+/* Offline Scripture Card & Badges */
+.offline-scripture-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-top: 4px solid var(--accent-color);
+  border-radius: var(--border-radius-sm);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  font-family: var(--font-sans);
+}
+.offline-scripture-card h4 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.offline-scripture-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+.offline-citation-badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  background-color: var(--accent-light);
+  border: 1px solid var(--accent-color);
+  padding: 0.4rem 1rem;
+  border-radius: var(--border-radius-full);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.offline-bible-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-full);
+  padding: 0.5rem 1.25rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color var(--transition-fast);
+}
+.offline-bible-btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+/* Choral Pitchpipe Styles */
+.pitch-btn {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-sm);
+  padding: 0.5rem 0;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pitch-btn:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--color-season-accent, var(--accent-color));
+}
+
+.pitch-btn.active {
+  border-color: var(--color-season-accent, var(--accent-color));
+  background-color: var(--accent-light);
+  color: var(--color-season-accent, var(--accent-color));
+  font-weight: 600;
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+#btn-pitchpipe-play.playing {
+  background: var(--color-season-accent, var(--accent-color));
+  box-shadow: 0 0 8px var(--color-season-accent, var(--accent-color));
+  animation: pulse-pitchpipe 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse-pitchpipe {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.liturgical-seasonal-ornament {
+  width: 90px;
+  height: 36px;
+  margin: 1.5rem auto 0.25rem auto;
+  display: block;
+  fill: none;
+  stroke: var(--color-season-accent, var(--accent-color));
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+  transition: all var(--transition-medium);
+}
+.liturgical-seasonal-ornament.text-muted {
+  opacity: 0.6;
+}
+
+/* Liturgical Drop-Cap styling */
+.liturgical-drop-cap {
+  font-family: var(--font-serif);
+  float: left;
+  font-size: 3.5rem;
+  line-height: 0.8;
+  margin-top: 0.15em;
+  margin-right: 0.1em;
+  font-weight: 700;
+  color: var(--color-season-accent, var(--accent-color));
+  text-shadow: 1px 1px 0 var(--bg-primary);
+  transition: color var(--transition-normal);
+}
+
+/* body font override and liturgical layout elements */
+body.font-style-serif {
+  font-family: var(--font-serif);
+}
+body.font-style-serif h1,
+body.font-style-serif h2,
+body.font-style-serif h3,
+body.font-style-serif h4,
+body.font-style-serif .prayer-title,
+body.font-style-serif .liturgy-section-title,
+body.font-style-serif .passageref {
+  font-family: var(--font-serif);
+  font-weight: 600;
+}
+
+/* Altar candles layout and flickers */
+.liturgical-header-flourish {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.5rem auto 0.5rem auto;
+  width: fit-content;
+}
+
+.altar-candle {
+  width: 24px;
+  height: 60px;
+}
+
+.candle-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.candle-flame {
+  transform-origin: 10px 18px;
+  animation: flame-flicker 2s infinite ease-in-out;
+}
+
+.altar-candle.right .candle-flame {
+  animation-delay: 0.7s;
+}
+
+@keyframes flame-flicker {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.95; }
+  25% { transform: scale(0.95, 1.05) rotate(-2deg); opacity: 0.85; }
+  50% { transform: scale(1.05, 0.95) rotate(1deg); opacity: 0.95; }
+  75% { transform: scale(0.98, 1.02) rotate(-1deg); opacity: 0.88; }
+  100% { transform: scale(1) rotate(0deg); opacity: 0.95; }
+}
+
+.typography-btn {
+  padding: 0.5rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: var(--text-xs);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.typography-btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+.typography-btn.active {
+  border-color: var(--accent-color);
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+
+
